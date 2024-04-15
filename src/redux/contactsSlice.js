@@ -1,8 +1,12 @@
-import contacts from '../assets/contacts.json'
-import { createSlice } from '@reduxjs/toolkit'
+
+import { createSlice, isAnyOf } from '@reduxjs/toolkit'
+import { addContactThunk, deleteContactThunk, fetchContactsThunk } from './contactsOps'
 
 const initialState = {
-	contacts,
+	contacts: [],
+
+	// isLoading: false,
+	// isError: false,
 }
 
 const sliceContacts = createSlice({
@@ -11,17 +15,25 @@ const sliceContacts = createSlice({
 	selectors: {
 		selectContacts: state => state.contacts,
 	},
-	reducers: {
-		addNewContact: (state, { payload }) => {
-			state.contacts.push(payload)
-		},
-		deleteContact: (state, { payload }) => {
-			state.contacts = state.contacts.filter(item => item.id !== payload)
-		},
 	
+	extraReducers: builder => {
+		builder
+			.addCase(fetchContactsThunk.fulfilled, (state, { payload }) => {
+				state.contacts = payload
+			})
+			.addCase(addContactThunk.fulfilled, (state, { payload }) => {
+				state.contacts.push(payload)
+			})
+			.addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
+				state.contacts = state.contacts.filter(item => item.id !== payload)
+			})
+			.addMatcher(isAnyOf(fetchContactsThunk.rejected, addContactThunk.rejected, deleteContactThunk.rejected), (state, { payload }) => {
+				state.isError = payload
+				})
 	},
+
 })
 
 export const contactsReducer = sliceContacts.reducer
-export const { addNewContact, deleteContact } = sliceContacts.actions
+
 export const { selectContacts } = sliceContacts.selectors

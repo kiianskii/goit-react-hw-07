@@ -1,19 +1,25 @@
 import { useDispatch, useSelector } from "react-redux"
 import Contact from "../Contact/Contact"
 import s from "./ContactList.module.css"
-import { deleteContact, selectContacts } from "../../redux/contactsSlice"
+import { selectContacts } from "../../redux/contactsSlice"
 import { selectFilter } from "../../redux/filtersSlice"
+import { useEffect } from "react"
+import { fetchContactsThunk } from "../../redux/contactsOps"
 
 
 function ContactList() {
     const contacts = useSelector(selectContacts)
-    const searchStr = useSelector(selectFilter)
+	const searchStr = useSelector(selectFilter)
 
   const dispatch = useDispatch()
 	
- const handleDelete = id => {
-     dispatch(deleteContact(id))
-    }
+	useEffect(() => {
+		dispatch(fetchContactsThunk())
+	}, [dispatch])
+	
+//  const handleDelete = id => {
+//      dispatch(deleteContactThunk(id))
+//     }
 
 
   const getFilteredData = () => {
@@ -34,7 +40,7 @@ function ContactList() {
 			<h2 className={s.header}>Phonebook</h2>
 		<ul>
 			{filteredData.map(contact => (
-                <Contact key={contact.id} contact={contact} handleDelete={handleDelete} />
+                <Contact key={contact.id} contact={contact} />
 			))}
             </ul>
          </>
