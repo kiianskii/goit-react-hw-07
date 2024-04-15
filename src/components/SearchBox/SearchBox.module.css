@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px;
+  padding: 20px;
+  background: white;
+  border: 2px solid #242424;
+  border-radius: 15px;
+  width: 300px;
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 20px;
+}
+.btn {
+  margin-top: 16px;
+}
