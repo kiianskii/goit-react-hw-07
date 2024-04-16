@@ -20,7 +20,10 @@ function ContactList() {
 		dispatch(fetchContactsThunk())
 	}, [dispatch])
 
-          if (!filteredData.length && searchStr) {
+	if (isLoading) {
+	return <h3 className={s.header}>Loading, please wait...</h3>
+	}   
+	else if (!filteredData.length && searchStr) {
 		return <h2 className={s.header}>Contact you searching doesn`t exist</h2>
 	} else if (!filteredData.length) {
 		return <h2 className={s.header}>No available contacts...</h2>
@@ -28,12 +31,11 @@ function ContactList() {
     return (
         <>
 			<h2 className={s.header}>Phonebook</h2>
-			{isLoading && <h3 className={s.header}>Loading, please wait...</h3>}
 		{!isError ? <ul>
 			{filteredData.map(contact => (
                 <Contact key={contact.id} contact={contact} />
 			))}
-            </ul> : <h3>Something went wrong, please try again</h3>}
+            </ul> : <h2 className={s.header}>Something went wrong, please try again</h2>}
          </>
 	)
 }
