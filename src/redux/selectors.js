@@ -3,8 +3,6 @@ import { selectContacts } from './contactsSlice'
 import { selectFilter } from './filtersSlice'
 
 
-
-
 export const selectFilteredDataMemo = createSelector([selectContacts, selectFilter], (contacts, searchStr) => { 
 		return contacts.filter(
 			item =>

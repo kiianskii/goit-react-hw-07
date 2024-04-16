@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import Contact from "../Contact/Contact"
 import s from "./ContactList.module.css"
-import {  selectIsLoading } from "../../redux/contactsSlice"
+import {  selectIsError, selectIsLoading } from "../../redux/contactsSlice"
 import { selectFilter } from "../../redux/filtersSlice"
 import { useEffect } from "react"
 import { fetchContactsThunk } from "../../redux/contactsOps"
@@ -12,6 +12,7 @@ function ContactList() {
 	const searchStr = useSelector(selectFilter)
 	const isLoading = useSelector(selectIsLoading)
 	const filteredData = useSelector(selectFilteredDataMemo)
+	const isError = useSelector(selectIsError)
 
   const dispatch = useDispatch()
 	
@@ -28,11 +29,11 @@ function ContactList() {
         <>
 			<h2 className={s.header}>Phonebook</h2>
 			{isLoading && <h3 className={s.header}>Loading, please wait...</h3>}
-		<ul>
+		{!isError ? <ul>
 			{filteredData.map(contact => (
                 <Contact key={contact.id} contact={contact} />
 			))}
-            </ul>
+            </ul> : <h3>Something went wrong, please try again</h3>}
          </>
 	)
 }
