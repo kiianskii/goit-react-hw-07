@@ -1,34 +1,23 @@
 import { useDispatch, useSelector } from "react-redux"
 import Contact from "../Contact/Contact"
 import s from "./ContactList.module.css"
-import { selectContacts } from "../../redux/contactsSlice"
+import {  selectIsLoading } from "../../redux/contactsSlice"
 import { selectFilter } from "../../redux/filtersSlice"
 import { useEffect } from "react"
 import { fetchContactsThunk } from "../../redux/contactsOps"
+import { selectFilteredDataMemo } from "../../redux/selectors"
 
 
 function ContactList() {
-    const contacts = useSelector(selectContacts)
 	const searchStr = useSelector(selectFilter)
+	const isLoading = useSelector(selectIsLoading)
+	const filteredData = useSelector(selectFilteredDataMemo)
 
   const dispatch = useDispatch()
 	
 	useEffect(() => {
 		dispatch(fetchContactsThunk())
 	}, [dispatch])
-	
-//  const handleDelete = id => {
-//      dispatch(deleteContactThunk(id))
-//     }
-
-
-  const getFilteredData = () => {
-		return contacts.filter(
-			item =>
-				item.name.toLowerCase().includes(searchStr.toLowerCase())
-		)
-	}
-  const filteredData = getFilteredData();
 
           if (!filteredData.length && searchStr) {
 		return <h2 className={s.header}>Contact you searching doesn`t exist</h2>
@@ -38,6 +27,7 @@ function ContactList() {
     return (
         <>
 			<h2 className={s.header}>Phonebook</h2>
+			{isLoading && <h3 className={s.header}>Loading, please wait...</h3>}
 		<ul>
 			{filteredData.map(contact => (
                 <Contact key={contact.id} contact={contact} />
