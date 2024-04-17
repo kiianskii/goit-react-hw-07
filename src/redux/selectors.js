@@ -3,7 +3,7 @@ import { selectContacts } from './contactsSlice'
 import { selectFilter } from './filtersSlice'
 
 
-export const selectFilteredDataMemo = createSelector([selectContacts, selectFilter], (contacts, searchStr) => { 
+export const selectFilteredContacts = createSelector([selectContacts, selectFilter], (contacts, searchStr) => { 
 		return contacts.filter(
 			item =>
 				item.name.toLowerCase().includes(searchStr.toLowerCase())

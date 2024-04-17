@@ -5,13 +5,13 @@ import {  selectIsError, selectIsLoading } from "../../redux/contactsSlice"
 import { selectFilter } from "../../redux/filtersSlice"
 import { useEffect } from "react"
 import { fetchContactsThunk } from "../../redux/contactsOps"
-import { selectFilteredDataMemo } from "../../redux/selectors"
+import { selectFilteredContacts } from "../../redux/selectors"
 
 
 function ContactList() {
 	const searchStr = useSelector(selectFilter)
 	const isLoading = useSelector(selectIsLoading)
-	const filteredData = useSelector(selectFilteredDataMemo)
+	const filteredData = useSelector(selectFilteredContacts)
 	const isError = useSelector(selectIsError)
 
   const dispatch = useDispatch()
